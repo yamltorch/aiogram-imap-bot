@@ -1,5 +1,6 @@
 import re
 from typing import Tuple, Optional
+from bs4 import BeautifulSoup
 
 
 def mail_validator(mail: str) -> Optional[str]:
@@ -20,3 +21,10 @@ def extract_email_and_password(input_string) -> Tuple[Optional[str], Optional[st
         return matches[0]
     else:
         return None, None
+
+
+def get_vinted_code(page: str):
+    soup = BeautifulSoup(page, 'lxml')
+
+    mail_code = soup.find("p").find_all("p")[1].text
+    return mail_code

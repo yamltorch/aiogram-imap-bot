@@ -1,6 +1,5 @@
 from typing import Optional
-
-from re_functions import mail_validator
+# from re_functions import mail_validator
 
 
 pochta_set = {"rambler", "onet", "firstmail"}
