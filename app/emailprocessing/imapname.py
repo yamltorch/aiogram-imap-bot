@@ -1,14 +1,6 @@
-from enum import Enum
 from typing import Optional
-import re
 
-
-def mail_validator(mail: str):
-    pat = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
-    if re.match(pat, mail):
-        return mail
-    else:
-        raise ValueError(f'{mail} is not a valid mail address')
+from re_functions import mail_validator
 
 
 pochta_set = {"rambler", "onet", "firstmail"}
@@ -30,7 +22,7 @@ emails_servers = {
 }
 
 
-class IMAPname:
+class IMAPServerArgs:
     def __init__(self, pochta: str):
         if pochta not in pochta_set:
             raise TypeError(f'Invalid mail. Name {pochta} not in {pochta_set}')
@@ -38,17 +30,12 @@ class IMAPname:
         self.mail_adress = None
 
     def make_search(self, adress: str):
-        # adress = mail_validator(adress)
+        # adress = myutils.mail_validator(adress)
         pass
 
-    def get_imap_server(self, mail_adress: Optional[str]):
+    def get_imap_server_args(self, mail_adress: Optional[str]):
         if self.pochta is None:
             return self.make_search(mail_adress)
         else:
             return (emails_servers.get(self.pochta).get("server"),
                     emails_servers.get(self.pochta).get("port"))
-
-
-
-
-
