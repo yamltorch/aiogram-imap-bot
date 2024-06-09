@@ -22,7 +22,7 @@ emails_servers = {
 
 
 class IMAPServerArgs:
-    def __init__(self, pochta: str):
+    def __init__(self, pochta: str = 'firstmail'):
         if pochta not in pochta_set:
             raise TypeError(f'Invalid mail. Name {pochta} not in {pochta_set}')
         self.pochta = pochta
@@ -32,9 +32,10 @@ class IMAPServerArgs:
         # adress = myutils.mail_validator(adress)
         pass
 
-    def get_imap_server_args(self, mail_adress: Optional[str]):
+    def get_imap_server_args(self, mail_adress: Optional[str] = None):
         if self.pochta is None:
-            return self.make_search(mail_adress)
+            if mail_adress is not None:
+                return self.make_search(mail_adress)
         else:
             return (emails_servers.get(self.pochta).get("server"),
                     emails_servers.get(self.pochta).get("port"))
