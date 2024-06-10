@@ -22,10 +22,3 @@ class ImapConnection:
                 return self.imap
             else:
                 return None
-
-    def close_connection(self):
-        self.imap.close()
-        self.imap.logout()
-
-    def __del__(self):
-        self.close_connection()

@@ -1,6 +1,9 @@
+import asyncio
 
-
-
+from app.tgbot import base
 
 if __name__ == '__main__':
-    run_bot()
+    try:
+        asyncio.run(base())
+    except (KeyboardInterrupt, SystemExit):
+        print("Bot stopped!")

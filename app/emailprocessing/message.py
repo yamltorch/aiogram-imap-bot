@@ -1,12 +1,12 @@
 import email
 import imaplib
 from typing import Literal
-from re_functions import get_vinted_code
+from .re_functions import get_vinted_code
 
 
 class EmailMessage:
 
-    EMAIL_PLACE = ["SPAM", "INBOX"]
+    EMAIL_PLACE = ["INBOX", "SPAM"]
     EMAIL_VIEW = ["UNSEEN", "ALL"]
 
     def __init__(self,
@@ -43,6 +43,19 @@ class EmailMessage:
             return None
         code = get_vinted_code(message)
         return code
+
+    def close_connection(self):
+        if self.imap is not None:
+            try:
+                self.imap.close()
+            except Exception as e:
+                print(f"Error closing mailbox: {e}")
+            finally:
+                self.imap.logout()
+                self.imap = None
+
+    def __del__(self):
+        self.close_connection()
 
 
 if __name__ == "__main__":

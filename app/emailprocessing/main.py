@@ -1,3 +1,5 @@
+from typing import Tuple, Optional, Union
+
 from app.emailprocessing.imapconnection import ImapConnection
 from app.emailprocessing.imapname import IMAPServerArgs
 from app.emailprocessing.message import EmailMessage
@@ -15,34 +17,34 @@ class EmailCodeManager:
         self.code = None
 
     def get_email_code(self,
-                       mailpass: str) -> int:
+                       mailpass: str) -> Union[Tuple[Optional[str], Exception], Tuple[Optional[str], int]]:
 
         try:
             self.mail_adress, self.mail_password = extract_email_and_password(mailpass)
         except Exception as e:
             print(f'Error in extract_email_and_password: {e}')
-            return 0
+            return self.mail_adress, e
 
         try:
             self.imap_args = IMAPServerArgs(self.mail_name).get_imap_server_args()
         except Exception as e:
             print(f'Error in IMAPServerArgs: {e}')
-            return 0
+            return self.mail_adress, e
 
         try:
             self.imap_server = ImapConnection(self.mail_adress, self.mail_password, self.imap_args).imap
         except Exception as e:
             print(f'Error in ImapConnection: {e}')
-            return 0
+            return self.mail_adress, e
 
         try:
             self.code = EmailMessage(self.imap_server).get_code()
         except Exception as e:
             print(f'Error in EmailMessage: {e}')
-            return 0
+            return self.mail_adress, e
 
         try:
-            return int(self.code)
+            return self.mail_adress, int(self.code)
         except Exception as e:
             print(f'Error in int(code): {e}')
-            return 0
+            return self.mail_adress, e
