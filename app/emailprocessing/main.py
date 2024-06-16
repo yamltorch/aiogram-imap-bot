@@ -17,7 +17,7 @@ class EmailCodeManager:
         self.code = None
 
     def get_email_code(self,
-                       mailpass: str) -> Union[Tuple[Optional[str], Exception], Tuple[Optional[str], int]]:
+                       mailpass: str) -> Union[Tuple[Optional[str], Exception], Tuple[Optional[str], str]]:
 
         try:
             self.mail_adress, self.mail_password = extract_email_and_password(mailpass)
@@ -44,7 +44,7 @@ class EmailCodeManager:
             return self.mail_adress, e
 
         try:
-            return self.mail_adress, int(self.code)
+            return self.mail_adress, self.code
         except Exception as e:
             print(f'Error in int(code): {e}')
             return self.mail_adress, e
